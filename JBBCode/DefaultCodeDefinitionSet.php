@@ -17,7 +17,7 @@ class DefaultCodeDefinitionSet implements CodeDefinitionSet
 {
 
     /** @var CodeDefinition[] The default code definitions in this set. */
-    protected $definitions = array();
+    protected array $definitions = [];
 
     /**
      * Constructs the default code definitions.
@@ -69,7 +69,7 @@ class DefaultCodeDefinitionSet implements CodeDefinitionSet
      *
      * @return CodeDefinition[]
      */
-    public function getCodeDefinitions()
+    public function getCodeDefinitions(): array
     {
         return $this->definitions;
     }
