@@ -1,7 +1,7 @@
 <?php
 
-require_once("../Parser.php");
-require_once("../visitors/SmileyVisitor.php");
+require_once dirname(__DIR__, 1) . "/Parser.php";
+require_once dirname(__DIR__, 1) . "/visitors/SmileyVisitor.php";
 
 error_reporting(E_ALL);
 

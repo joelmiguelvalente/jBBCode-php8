@@ -1,5 +1,5 @@
 <?php
-require_once "/path/to/jbbcode/Parser.php";
+require_once dirname(__DIR__, 1) . "/Parser.php";
 
 $parser = new JBBCode\Parser();
 $parser->addCodeDefinitionSet(new JBBCode\DefaultCodeDefinitionSet());
