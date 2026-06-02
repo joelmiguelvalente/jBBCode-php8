@@ -14,9 +14,9 @@ require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'InputValidator.
 class FnValidator implements \JBBCode\InputValidator
 {
 	/**
-	 * @var callable
+	 * @var \Closure
 	 */
-	private $validator;
+	private \Closure $validator;
 
 	/**
 	 * Construct a custom validator from a callable.
@@ -24,7 +24,7 @@ class FnValidator implements \JBBCode\InputValidator
 	 */
 	public function __construct(callable $validator)
 	{
-		$this->validator = $validator;
+		$this->validator = \Closure::fromCallable($validator);
 	}
 
 	/**
@@ -32,9 +32,8 @@ class FnValidator implements \JBBCode\InputValidator
 	 * @param string $input
 	 * @return boolean
 	 */
-	public function validate($input)
-	{
-		$validator = $this->validator; // FIXME: for PHP>=7.0 replace with ($this->validator)($input)
-		return (bool) $validator($input);
-	}
+	public function validate(string $input): bool
+    {
+        return (bool) ($this->validator)($input);
+    }
 }

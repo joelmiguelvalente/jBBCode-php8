@@ -23,8 +23,8 @@ class CssColorValidator implements \JBBCode\InputValidator
      * @param string $input  the string to validate
      * @return boolean
      */
-    public function validate($input)
+    public function validate(string $input): bool
     {
-        return (bool) preg_match('/^[A-z0-9\-#., ()%]+$/', $input);
+        return (bool) preg_match('/^[A-Za-z0-9\-#., ()%]+$/', $input);
     }
 }
