@@ -1,4 +1,5 @@
 {
+    "version": "2.0.0",
     "name": "jbbcode/jbbcode",
     "type": "library",
     "description": "A lightweight but extensible BBCode parser written in PHP 8.3.",
