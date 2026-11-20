@@ -5,7 +5,7 @@ jBBCode (PHP 8.3+ compatible)
 [![Software License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE.md)
 [![Build Status](https://img.shields.io/travis/jbowens/jBBCode.svg)](https://travis-ci.org/jbowens/jBBCode)
 
-jBBCode is a bbcode parser written in php 5.3. It's relatively lightweight and parses
+jBBCode is a bbcode parser written in PHP 8.3+. It's relatively lightweight and parses
 bbcodes without resorting to expensive regular expressions.
 
 **This fork is compatible with PHP 8.3, 8.4, and 8.5+.**
@@ -46,14 +46,14 @@ You may load jBBCode via composer. In your composer.json file:
 
 ```json
 "require": {
-    "jbbcode/jbbcode": "1.3.*"
+    "jbbcode/jbbcode": "1.4.*"
 }
 ```
 
 In your php file:
 
 ```php
-require 'vendor/autoloader.php';
+require 'vendor/autoload.php';
 
 $parser = new JBBCode\Parser();
 ```
@@ -87,7 +87,7 @@ what needs to be done. Before submitting a pull request, verify that all unit te
 #### Running unit tests
 To run the unit tests,
 ensure that [phpunit](http://github.com/sebastianbergmann/phpunit) is installed, or install it through the composer
-dev dependencies. Then run `phpunit` from the project directory. If you're adding new functionality, writing
+dev dependencies. Then run `vendor/bin/phpunit` from the project directory. If you're adding new functionality, writing
 additional unit tests is a great idea.
 
 

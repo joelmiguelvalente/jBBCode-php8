@@ -1,19 +1,18 @@
 <?php
 
-class TextNodeTest extends PHPUnit_Framework_TestCase
+class TextNodeTest extends \PHPUnit\Framework\TestCase
 {
     /** @var  JBBCode\TextNode */
     private $_textNode;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->_textNode = new JBBCode\TextNode('');
     }
 
     public function accept()
     {
-        $mock = $this->getMock('JBBCode\NodeVisitor',
-            array('visitDocumentElement', 'visitTextNode', 'visitElementNode'));
+        $mock = $this->createMock(\JBBCode\NodeVisitor::class);
         $mock->expects($this->never())
              ->method('visitDocumentElement');
         $mock->expects($this->once())

@@ -1,20 +1,25 @@
 <?php
 
+namespace JBBCode;
+
+use PHPUnit\Framework\TestCase;
+use JBBCode\DefaultCodeDefinitionSet;
+
 /**
  * Test cases for the default bbcode set.
  *
  * @author jbowens
  * @since May 2013
  */
-class DefaultCodeDefinitionSetTest extends PHPUnit_Framework_TestCase
+class DefaultCodeDefinitionSetTest extends TestCase
 {
     public function testGetCodeDefinitions()
     {
-        $dcds = new JBBCode\DefaultCodeDefinitionSet();
+        $dcds = new DefaultCodeDefinitionSet();
         $definitions = $dcds->getCodeDefinitions();
-        $this->assertInternalType('array', $definitions);
+        $this->assertIsArray($definitions);
 
-        $parser = new JBBCode\Parser();
+        $parser = new Parser();
 
         $this->assertFalse($parser->codeExists('b'));
         $this->assertFalse($parser->codeExists('i'));

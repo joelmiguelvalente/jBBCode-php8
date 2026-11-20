@@ -1,6 +1,6 @@
 <?php
 
-class SimpleEvaluationTest extends PHPUnit_Framework_TestCase
+class SimpleEvaluationTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

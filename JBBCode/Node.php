@@ -11,8 +11,8 @@ namespace JBBCode;
  */
 abstract class Node
 {
-    /** @var Node Pointer to the parent node of this node */
-    protected $parent;
+    /** @var Node|null Pointer to the parent node of this node */
+    protected ?Node $parent = null;
 
     /**
      * Returns this node's immediate parent.

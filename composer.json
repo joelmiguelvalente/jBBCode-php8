@@ -3,10 +3,10 @@
     "type": "library",
     "description": "A lightweight but extensible BBCode parser written in PHP 8.3.",
     "keywords": ["BBCode", "BB"],
-    "homepage": "http://jbbcode.com/",
+    "homepage": "https://jbbcode.com/",
     "license": "MIT",
     "require": {
-        "php": ">=8.2.0"
+        "php": ">=8.3.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.6",

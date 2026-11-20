@@ -1,13 +1,13 @@
 <?php
 
-class ParserTest extends PHPUnit_Framework_TestCase
+class ParserTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var JBBCode\Parser
      */
     private $_parser;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->_parser = new JBBCode\Parser();
         $this->_parser->addCodeDefinitionSet(new JBBCode\DefaultCodeDefinitionSet());

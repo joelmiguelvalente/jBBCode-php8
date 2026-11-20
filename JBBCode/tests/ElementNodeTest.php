@@ -1,13 +1,20 @@
 <?php
 
-class ElementNodeTest extends PHPUnit_Framework_TestCase
+namespace JBBCode;
+
+use JBBCode\ElementNode;
+use JBBCode\CodeDefinitionBuilder;
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\MockObject\MockObject;
+
+class ElementNodeTest extends TestCase
 {
-    /** @var  JBBCode\ElementNode */
+    /** @var  \JBBCode\ElementNode */
     private $_elementNode;
 
-    protected function setUp()
+    protected function setUp(): void
     {
-        $this->_elementNode = new JBBCode\ElementNode();
+        $this->_elementNode = new ElementNode();
     }
 
     public function testConstructor()
@@ -20,34 +27,57 @@ class ElementNodeTest extends PHPUnit_Framework_TestCase
         $this->assertEmpty($this->_elementNode->getAsHTML());
     }
 
-    public function testAccept()
+    /**
+     * @template T of object
+     * @param class-string<T> $className
+     * @param list<non-empty-string> $onlyMethods
+     * @return \PHPUnit\Framework\MockObject\MockObject&T
+     */
+    private function buildMock(string $className, string $method, mixed $will, array $onlyMethods = []): MockObject
     {
-        $mock = $this->getMock('JBBCode\NodeVisitor',
-            array('visitDocumentElement', 'visitTextNode', 'visitElementNode'));
-        $mock->expects($this->never())
-             ->method('visitDocumentElement');
-        $mock->expects($this->never())
-             ->method('visitTextNode');
+        $mock = $this->getMockBuilder($className)
+            ->onlyMethods($onlyMethods ?: [$method])
+            ->getMock();
         $mock->expects($this->once())
-             ->method('visitElementNode')
-             ->with($this->equalTo($this->_elementNode));
+            ->method($method)
+            ->willReturn($will);
+        return $mock;
+    }
+
+    public function testAccept(): void
+    {
+        $mock = $this->getMockBuilder(\JBBCode\NodeVisitor::class)
+            ->onlyMethods(['visitDocumentElement', 'visitTextNode', 'visitElementNode'])
+            ->getMock();
+        $mock->expects($this->never())
+            ->method('visitDocumentElement');
+        $mock->expects($this->never())
+            ->method('visitTextNode');
+        $mock->expects($this->once())
+            ->method('visitElementNode')
+            ->with($this->equalTo($this->_elementNode));
         $this->_elementNode->accept($mock);
     }
 
-    public function testSetCodeDefinition()
+    public function testSetCodeDefinition(): void
     {
-        $mock = $this->getMock('JBBCode\CodeDefinition', array('getTagName'));
-        $mock->expects($this->once())
-             ->method('getTagName')
-            ->will($this->returnValue('foo'));
+        $mock = $this->buildMock(
+            className: \JBBCode\CodeDefinition::class,
+            method: 'getTagName',
+            will: 'foo',
+            onlyMethods: ['getTagName']
+        );
         $this->_elementNode->setCodeDefinition($mock);
         $this->assertSame($mock, $this->_elementNode->getCodeDefinition());
         $this->assertEquals('foo', $this->_elementNode->getTagName());
     }
 
-    public function testAddChild()
+    public function testAddChild(): void
     {
-        $mock = $this->getMock('JBBCode\ElementNode', array('setParent'));
+        $mock = $this->getMockBuilder(\JBBCode\ElementNode::class)
+            ->onlyMethods(['setParent'])
+            ->getMock();
+
         $mock->expects($this->once())
             ->method('setParent')
             ->with($this->equalTo($this->_elementNode));
@@ -55,14 +85,14 @@ class ElementNodeTest extends PHPUnit_Framework_TestCase
         $this->assertContains($mock, $this->_elementNode->getChildren());
     }
 
-    public function testIsTextNode()
+    public function testIsTextNode(): void
     {
         $this->assertFalse($this->_elementNode->isTextNode());
     }
 
-    public function testGetAsBBCode()
+    public function testGetAsBBCode(): void
     {
-        $builder = new JBBCode\CodeDefinitionBuilder('foo', 'bar');
+        $builder = new CodeDefinitionBuilder('foo', 'bar');
         $codeDefinition = $builder->build();
         $this->_elementNode->setCodeDefinition($codeDefinition);
         $this->assertEquals('[foo][/foo]', $this->_elementNode->getAsBBCode());

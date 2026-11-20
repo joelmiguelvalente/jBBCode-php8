@@ -8,7 +8,7 @@
  * @author jbowens
  *
  */
-class ParsingEdgeCaseTest extends PHPUnit_Framework_TestCase
+class ParsingEdgeCaseTest extends \PHPUnit\Framework\TestCase
 {
 
     /**

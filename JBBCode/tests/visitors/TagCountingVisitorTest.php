@@ -2,19 +2,22 @@
 
 require_once dirname(dirname(__DIR__)) . '/visitors/TagCountingVisitor.php';
 
-class TagCountingVisitorTest extends \PHPUnit_Framework_TestCase
+class TagCountingVisitorTest extends \PHPUnit\Framework\TestCase
 {
     /** @var  JBBCode\visitors\TagCountingVisitor */
     protected $_tagCountingVisitor;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->_tagCountingVisitor = new JBBCode\visitors\TagCountingVisitor();
     }
 
     public function testVisitTextNode()
     {
-        $mock = $this->getMock('JBBCode\TextNode', array('accept'), array(''));
+        $mock = $this->getMockBuilder(\JBBCode\TextNode::class)
+            ->onlyMethods(['accept'])
+            ->setConstructorArgs([''])
+            ->getMock();
         $mock->expects($this->never())
                 ->method('accept');
         $this->_tagCountingVisitor->visitTextNode($mock);
@@ -26,33 +29,39 @@ class TagCountingVisitorTest extends \PHPUnit_Framework_TestCase
      */
     public function testVisitElementNode()
     {
-        $childMock = $this->getMock('JBBCode\ElementNode', array('accept'));
+        $childMock = $this->getMockBuilder(\JBBCode\ElementNode::class)
+            ->onlyMethods(['accept'])
+            ->getMock();
         $childMock->expects($this->once())
                   ->method('accept')
                   ->with($this->equalTo($this->_tagCountingVisitor));
 
-        $mock = $this->getMock('JBBCode\ElementNode', array('getChildren', 'getTagName'));
+        $mock = $this->getMockBuilder(\JBBCode\ElementNode::class)
+            ->onlyMethods(['getChildren', 'getTagName'])
+            ->getMock();
         $mock->expects($this->once())
              ->method('getChildren')
-             ->will($this->returnValue(array(
+             ->willReturn(array(
                  $childMock,
-             )));
+             ));
         $mock->expects($this->once())
             ->method('getTagName')
-            ->will($this->returnValue('foo'));
+            ->willReturn('foo');
 
         $this->assertEquals(0, $this->_tagCountingVisitor->getFrequency('foo'));
 
         $this->_tagCountingVisitor->visitElementNode($mock);
         $this->assertEquals(1, $this->_tagCountingVisitor->getFrequency('foo'));
 
-        $mock = $this->getMock('JBBCode\ElementNode', array('getChildren', 'getTagName'));
+        $mock = $this->getMockBuilder(\JBBCode\ElementNode::class)
+            ->onlyMethods(['getChildren', 'getTagName'])
+            ->getMock();
         $mock->expects($this->once())
              ->method('getChildren')
-             ->will($this->returnValue(array()));
+             ->willReturn(array());
         $mock->expects($this->once())
              ->method('getTagName')
-             ->will($this->returnValue('foo'));
+             ->willReturn('foo');
 
         $this->_tagCountingVisitor->visitElementNode($mock);
         $this->assertEquals(2, $this->_tagCountingVisitor->getFrequency('foo'));
@@ -60,17 +69,21 @@ class TagCountingVisitorTest extends \PHPUnit_Framework_TestCase
 
     public function testVisitDocumentElement()
     {
-        $childMock = $this->getMock('JBBCode\ElementNode', array('accept'));
+        $childMock = $this->getMockBuilder(\JBBCode\ElementNode::class)
+            ->onlyMethods(['accept'])
+            ->getMock();
         $childMock->expects($this->once())
                   ->method('accept')
                   ->with($this->equalTo($this->_tagCountingVisitor));
 
-        $mock = $this->getMock('JBBCode\DocumentElement', array('getChildren'));
+        $mock = $this->getMockBuilder(\JBBCode\DocumentElement::class)
+            ->onlyMethods(['getChildren'])
+            ->getMock();
         $mock->expects($this->once())
              ->method('getChildren')
-             ->will($this->returnValue(array(
+             ->willReturn(array(
                  $childMock,
-             )));
+             ));
 
         $this->_tagCountingVisitor->visitDocumentElement($mock);
     }

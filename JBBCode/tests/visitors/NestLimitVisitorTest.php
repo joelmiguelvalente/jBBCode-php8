@@ -7,38 +7,42 @@
  * @author jbowens
  * @since May 2013
  */
-class NestLimitVisitorTest extends PHPUnit_Framework_TestCase
+class NestLimitVisitorTest extends \PHPUnit\Framework\TestCase
 {
 
     /** @var \JBBCode\visitors\NestLimitVisitor */
     private $_nestLimitVisitor;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->_nestLimitVisitor = new \JBBCode\visitors\NestLimitVisitor();
     }
 
     public function testVisitDocumentElement()
     {
-        $childMock = $this->getMock('JBBCode\ElementNode', array('accept'));
+        $childMock = $this->getMockBuilder(\JBBCode\ElementNode::class)
+            ->onlyMethods(['accept'])
+            ->getMock();
         $childMock->expects($this->once())
                   ->method('accept')
                   ->with($this->equalTo($this->_nestLimitVisitor));
 
-        $mock = $this->getMock('JBBCode\DocumentElement', array('getChildren'));
+        $mock = $this->getMockBuilder(\JBBCode\DocumentElement::class)
+            ->onlyMethods(['getChildren'])
+            ->getMock();
         $mock->expects($this->once())
              ->method('getChildren')
-             ->will($this->returnValue(array(
+             ->willReturn(array(
                  $childMock
-             )));
+             ));
 
         $this->_nestLimitVisitor->visitDocumentElement($mock);
     }
 
     public function testVisitTextNode()
     {
-        $mock = $this->getMockBuilder('JBBCode\TextNode')
-            ->setMethods(array('accept'))
+        $mock = $this->getMockBuilder(\JBBCode\TextNode::class)
+            ->onlyMethods(['accept'])
             ->disableOriginalConstructor()
             ->getMock();
         $mock->expects($this->never())

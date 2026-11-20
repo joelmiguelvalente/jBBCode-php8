@@ -1,6 +1,12 @@
 <?php
 
-class CodeDefinitionBuilderTest extends PHPUnit_Framework_TestCase
+namespace JBBCode;
+
+use PHPUnit\Framework\TestCase;
+use JBBCode\CodeDefinitionBuilder;
+use JBBCode\validators\UrlValidator;
+
+class CodeDefinitionBuilderTest extends TestCase
 {
 
     /**
@@ -8,7 +14,7 @@ class CodeDefinitionBuilderTest extends PHPUnit_Framework_TestCase
      */
     private $_builder;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->_builder = new CodeDefinitionBuilderStub('foo', 'bar');
     }
@@ -55,23 +61,23 @@ class CodeDefinitionBuilderTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException InvalidArgumentException
      * @dataProvider invalidNestLimitProvider
      */
     public function testSetInvalidNestLimit($limit)
     {
+        $this->expectException(\InvalidArgumentException::class);
         $this->_builder->setNestLimit($limit);
     }
 
     public function testSetOptionValidator()
     {
         $this->assertEmpty($this->_builder->getOptionValidators());
-        $urlValidator = new JBBCode\validators\UrlValidator();
+        $urlValidator = new UrlValidator();
         $this->assertSame($this->_builder, $this->_builder->setOptionValidator($urlValidator));
         $this->assertArrayHasKey('foo', $this->_builder->getOptionValidators());
         $this->assertContains($urlValidator, $this->_builder->getOptionValidators());
 
-        $otherUrlValidator = new JBBCode\validators\UrlValidator();
+        $otherUrlValidator = new UrlValidator();
         $this->assertSame($this->_builder, $this->_builder->setOptionValidator($otherUrlValidator, 'url'));
         $this->assertArrayHasKey('url', $this->_builder->getOptionValidators());
         $this->assertContains($urlValidator, $this->_builder->getOptionValidators());
@@ -81,7 +87,7 @@ class CodeDefinitionBuilderTest extends PHPUnit_Framework_TestCase
     public function testSetBodyValidator()
     {
         $this->assertNull($this->_builder->getBodyValidator());
-        $validator = new JBBCode\validators\UrlValidator();
+        $validator = new UrlValidator();
         $this->assertSame($this->_builder, $this->_builder->setBodyValidator($validator));
         $this->assertSame($validator, $this->_builder->getBodyValidator());
     }
@@ -93,7 +99,7 @@ class CodeDefinitionBuilderTest extends PHPUnit_Framework_TestCase
     {
         $this->assertSame($this->_builder, $this->_builder->removeOptionValidator());
         $this->assertEmpty($this->_builder->getOptionValidators());
-        $this->_builder->setOptionValidator(new JBBCode\validators\UrlValidator());
+        $this->_builder->setOptionValidator(new UrlValidator());
         $this->assertSame($this->_builder, $this->_builder->removeOptionValidator());
         $this->assertEmpty($this->_builder->getOptionValidators());
     }
@@ -105,7 +111,7 @@ class CodeDefinitionBuilderTest extends PHPUnit_Framework_TestCase
     {
         $this->assertSame($this->_builder, $this->_builder->removeBodyValidator());
         $this->assertNull($this->_builder->getBodyValidator());
-        $this->_builder->setOptionValidator(new JBBCode\validators\UrlValidator());
+        $this->_builder->setOptionValidator(new UrlValidator());
         $this->assertSame($this->_builder, $this->_builder->removeBodyValidator());
         $this->assertNull($this->_builder->getBodyValidator());
     }
@@ -114,13 +120,12 @@ class CodeDefinitionBuilderTest extends PHPUnit_Framework_TestCase
     {
         return array(
             array(-2),
-            array(null),
-            array(false),
+            array(0),
         );
     }
 }
 
-class CodeDefinitionBuilderStub extends \JBBCode\CodeDefinitionBuilder
+class CodeDefinitionBuilderStub extends CodeDefinitionBuilder
 {
 
     /**

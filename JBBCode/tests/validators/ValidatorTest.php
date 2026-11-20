@@ -6,7 +6,7 @@
  * @author jbowens
  * @since May 2013
  */
-class ValidatorTest extends PHPUnit_Framework_TestCase
+class ValidatorTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Tests an invalid url as an option to a url bbcode.

@@ -1,10 +1,20 @@
 <?php
-require_once dirname(__DIR__, 1) . "/Parser.php";
 
-$parser = new JBBCode\Parser();
-$parser->addCodeDefinitionSet(new JBBCode\DefaultCodeDefinitionSet());
+/**
+ * We load the autoloader so that the Parser is executed.
+ **/
+require_once dirname(__DIR__, 2) . '/vendor/autoload.php';
+
+use JBBCode\Parser;
+use JBBCode\DefaultCodeDefinitionSet;
+
+$parser = new Parser();
+$parser->addCodeDefinitionSet(new DefaultCodeDefinitionSet());
 
 $text = "The bbcode in here [b]is never closed!";
 $parser->parse($text);
 
-print $parser->getAsBBCode();
+$eol = PHP_SAPI === 'cli' ? PHP_EOL : '<br>' . PHP_EOL;
+
+echo 'Text (original): ' . $text . $eol;
+echo 'Text (parser): ' . $parser->getAsBBCode() . $eol;

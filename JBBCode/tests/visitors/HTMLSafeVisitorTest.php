@@ -7,7 +7,7 @@ require_once dirname(dirname(__DIR__)) . '/visitors/HTMLSafeVisitor.php';
  *
  * @author astax-t
  */
-class HTMLSafeVisitorTest extends PHPUnit_Framework_TestCase
+class HTMLSafeVisitorTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Asserts that the given bbcode string produces the given html string

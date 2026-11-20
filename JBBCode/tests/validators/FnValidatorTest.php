@@ -1,6 +1,6 @@
 <?php
 
-class FnValidatorTest extends PHPUnit_Framework_TestCase
+class FnValidatorTest extends \PHPUnit\Framework\TestCase
 {
 	/**
 	 * Test custom functional validator implementations.

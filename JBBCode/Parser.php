@@ -37,7 +37,7 @@ class Parser
     const OPTION_STATE_JAVASCRIPT = 5;
 
     /** @var DocumentElement The root element of the parse tree */
-    protected $treeRoot;
+    protected ?DocumentElement $treeRoot = null;
 
     /** @var CodeDefinition[] The list of bbcodes to be used by the parser. */
     protected array $bbcodes = [];
@@ -654,5 +654,7 @@ class Parser
             }
             $curr = $tokenizer->next();
         }
+
+        return $parent;
     }
 }

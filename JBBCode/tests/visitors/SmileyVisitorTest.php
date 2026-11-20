@@ -2,29 +2,33 @@
 
 require_once dirname(dirname(__DIR__)) . '/visitors/SmileyVisitor.php';
 
-class SmileyVisitorTest extends PHPUnit_Framework_TestCase
+class SmileyVisitorTest extends \PHPUnit\Framework\TestCase
 {
     /** @var \JBBCode\visitors\SmileyVisitor */
     private $_smileyVisitor;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->_smileyVisitor = new \JBBCode\visitors\SmileyVisitor();
     }
 
     public function testVisitDocumentElement()
     {
-        $childMock = $this->getMock('JBBCode\ElementNode', array('accept'));
+        $childMock = $this->getMockBuilder(\JBBCode\ElementNode::class)
+            ->onlyMethods(['accept'])
+            ->getMock();
         $childMock->expects($this->once())
                   ->method('accept')
                   ->with($this->equalTo($this->_smileyVisitor));
 
-        $mock = $this->getMock('JBBCode\DocumentElement', array('getChildren'));
+        $mock = $this->getMockBuilder(\JBBCode\DocumentElement::class)
+            ->onlyMethods(['getChildren'])
+            ->getMock();
         $mock->expects($this->once())
              ->method('getChildren')
-             ->will($this->returnValue(array(
+             ->willReturn(array(
                  $childMock,
-             )));
+             ));
 
         $this->_smileyVisitor->visitDocumentElement($mock);
     }
@@ -34,30 +38,37 @@ class SmileyVisitorTest extends PHPUnit_Framework_TestCase
         $builder = new \JBBCode\CodeDefinitionBuilder('foo', 'bar');
         $builder->setParseContent(false);
 
-        $mock = $this->getMock('JBBCode\DocumentElement', array('getChildren', 'getCodeDefinition'));
+        $mock = $this->getMockBuilder(\JBBCode\DocumentElement::class)
+            ->onlyMethods(['getChildren', 'getCodeDefinition'])
+            ->getMock();
         $mock->expects($this->never())
             ->method('getChildren');
         $mock->expects($this->once())
             ->method('getCodeDefinition')
-            ->will($this->returnValue(
+            ->willReturn(
                 $builder->build()
-            ));
+            );
         $this->_smileyVisitor->visitElementNode($mock);
 
-        $childMock = $this->getMock('JBBCode\ElementNode', array('accept', 'parseContent'));
+        $childMock = $this->getMockBuilder(\JBBCode\ElementNode::class)
+            ->onlyMethods(['accept'])
+            ->addMethods(['parseContent'])
+            ->getMock();
         $childMock->expects($this->once())
                 ->method('accept')
                 ->with($this->equalTo($this->_smileyVisitor));
 
-        $mock = $this->getMock('JBBCode\DocumentElement', array('getChildren', 'getCodeDefinition'));
+        $mock = $this->getMockBuilder(\JBBCode\DocumentElement::class)
+            ->onlyMethods(['getChildren', 'getCodeDefinition'])
+            ->getMock();
         $mock->expects($this->once())
             ->method('getChildren')
-            ->will($this->returnValue(array(
+            ->willReturn(array(
                 $childMock,
-            )));
+            ));
         $mock->expects($this->once())
             ->method('getCodeDefinition')
-            ->will($this->returnValue($builder->setParseContent(true)->build()));
+            ->willReturn($builder->setParseContent(true)->build());
         $this->_smileyVisitor->visitElementNode($mock);
     }
 

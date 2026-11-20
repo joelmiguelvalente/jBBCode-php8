@@ -12,28 +12,28 @@ namespace JBBCode;
 class CodeDefinition
 {
     /** @var string NOTE: THIS PROPERTY SHOULD ALWAYS BE LOWERCASE; USE setTagName() TO ENSURE THIS */
-    protected string $tagName;
+    protected string $tagName = '';
 
     /** @var boolean Whether or not this CodeDefinition uses an option parameter. */
-    protected bool $useOption;
+    protected bool $useOption = false;
 
     /** @var string The replacement text to be used for simple CodeDefinitions */
-    protected string $replacementText;
+    protected string $replacementText = '';
 
     /** @var boolean Whether or not to parse elements of this definition's contents */
-    protected bool $parseContent;
+    protected bool $parseContent = true;
 
     /** @var integer How many of this element type may be nested within each other */
-    protected int $nestLimit;
+    protected int $nestLimit = -1;
 
     /** @var integer How many of this element type have been seen */
-    protected int $elCounter;
+    protected int $elCounter = 0;
 
     /** @var array[string]InputValidator The input validators to run options through */
-    protected array $optionValidator;
+    protected array $optionValidator = [];
 
     /** @var InputValidator The input validator to run the body ({param}) through */
-    protected ?InputValidator $bodyValidator;
+    protected ?InputValidator $bodyValidator = null;
 
     /**
      * Constructs a new CodeDefinition.

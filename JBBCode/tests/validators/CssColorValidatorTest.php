@@ -1,6 +1,6 @@
 <?php
 
-class CssColorValidatorTest extends PHPUnit_Framework_TestCase
+class CssColorValidatorTest extends \PHPUnit\Framework\TestCase
 {
 
     /**
@@ -8,7 +8,7 @@ class CssColorValidatorTest extends PHPUnit_Framework_TestCase
      */
     private $_validator;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->_validator = new JBBCode\validators\CssColorValidator();
     }

@@ -6,7 +6,7 @@
  *
  * @author jbowens
  */
-class ParseContentTest extends PHPUnit_Framework_TestCase
+class ParseContentTest extends \PHPUnit\Framework\TestCase
 {
 
     /**
@@ -14,7 +14,7 @@ class ParseContentTest extends PHPUnit_Framework_TestCase
      */
     private $_parser;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->_parser = new JBBCode\Parser();
         $this->_parser->addCodeDefinitionSet(new JBBcode\DefaultCodeDefinitionSet());

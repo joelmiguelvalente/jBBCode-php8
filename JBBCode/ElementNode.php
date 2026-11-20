@@ -2,7 +2,7 @@
 
 namespace JBBCode;
 
-require_once 'Node.php';
+use JBBCode\Node;
 
 /**
  * An element within the tree. Consists of a tag name which defines the type of the
@@ -14,7 +14,7 @@ require_once 'Node.php';
 class ElementNode extends Node
 {
     /** @var string The tagname of this element, for i.e. "b" in [b]bold[/b] */
-    protected string $tagName;
+    protected string $tagName = '';
 
     /** @var string[] The attributes, if any, of this element node */
     protected array $attribute = [];
